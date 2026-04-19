@@ -2,7 +2,7 @@ import requests, time, os
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 
-# CLI வண்ணங்கள் மற்றும் ஸ்டைல்கள்
+
 G, R, Y, C, W, RS = '\033[92m', '\033[91m', '\033[93m', '\033[96m', '\033[97m', '\033[0m'
 BD = '\033[1m'
 
@@ -17,15 +17,15 @@ class XSSScanner:
         self.payloads = self.load_payloads(payload_file)
 
     def load_payloads(self, file_path):
-        """கோப்பிலிருந்து பேலோடுகளைப் படித்தல்"""
+        
         if not os.path.exists(file_path):
-            print(f"{R}[!] Error: '{file_path}' கோப்பு கிடைக்கவில்லை!{RS}")
+            print(f"{R}[!] Error: '{file_path}' not found{RS}")
             return []
         with open(file_path, 'r', encoding='utf-8') as f:
             return [line.strip() for line in f.readlines() if line.strip()]
 
     def crawl_and_scan(self, url):
-        """20 பக்கங்கள் வரை தானாக தேடி ஸ்கேன் செய்தல்"""
+        
         if len(self.visited) >= self.max_pages or url in self.visited:
             return
         
@@ -36,10 +36,10 @@ class XSSScanner:
             res = self.session.get(url, timeout=5)
             soup = BeautifulSoup(res.text, 'html.parser')
             
-            # இன்புட் ஃபார்ம்களைச் சோதித்தல்
+           
             self.scan_forms(url, soup)
 
-            # அடுத்தடுத்த லிங்க்களைக் கண்டுபிடித்தல்
+            
             for a in soup.find_all('a', href=True):
                 link = urljoin(url, a['href'])
                 if urlparse(link).netloc == urlparse(self.target_url).netloc:
@@ -48,7 +48,7 @@ class XSSScanner:
             pass
 
     def scan_forms(self, url, soup):
-        """வொல்னரபிலிட்டிகளைத் தேடுதல்"""
+        
         forms = soup.find_all('form')
         for form in forms:
             action = urljoin(url, form.get('action') or "")
@@ -73,7 +73,7 @@ class XSSScanner:
                     continue
 
     def print_summary_table(self, duration):
-        """ஸ்கேன் முடிவுகளை அட்டவணைப்படுத்தி காட்டுதல்"""
+        
         print(f"\n{W}{'━'*75}{RS}")
         print(f"  {BD}{W}FINAL SCAN REPORT{RS}")
         print(f"{W}{'━'*75}{RS}")
@@ -88,7 +88,7 @@ class XSSScanner:
             print(f"  {R}{BD}{'TARGET URL':<40} | {'METHOD':<8} | {'PAYLOAD'}{RS}")
             print(f"  {W}{'-'*72}{RS}")
             for v in self.vulns:
-                # URL நீளமாக இருந்தால் சுருக்கிக் காட்ட (Clean output)
+                # URL  (Clean output)
                 display_url = (v['url'][:37] + '..') if len(v['url']) > 37 else v['url']
                 print(f"  {W}{display_url:<40} | {v['method']:<8} | {Y}{v['payload']}{RS}")
         else:
