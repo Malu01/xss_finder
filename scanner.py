@@ -1,7 +1,7 @@
 import requests, time, os
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
-
+from payload_loader import load_payloads
 
 G, R, Y, C, W, RS = '\033[92m', '\033[91m', '\033[93m', '\033[96m', '\033[97m', '\033[0m'
 BD = '\033[1m'
@@ -14,7 +14,7 @@ class XSSScanner:
         self.max_pages = max_pages
         self.session = requests.Session()
         self.session.headers = {"User-Agent": "WolfScanner/3.0"}
-        self.payloads = self.load_payloads(payload_file)
+        self.payloads = load_payloads(payload_file)
 
     def load_payloads(self, file_path):
         
