@@ -40,7 +40,9 @@ xss_finder/
 1. Clone the repository:
 
 ```
-git clone <your-repo-url>
+git clone <youChange the installation session like 
+```bash 
+git clone https://github.com/Malu01/xss_finder.git 
 cd xss_finder
 ```
 
